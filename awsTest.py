@@ -21,7 +21,6 @@ config = Config(
                 'ami-01e3b8c3a51e88954',    # Please replace image_id with your image id, e.g., 'ami-82f4dae7'
                 region='us-east-1',    # Please replace region with your region
                 key_name='testVirginiaKey',
-                key_file='~/Documents/uchicago/pitjjgenomics/awskeys.json',    # Please replace KEY with your key name **Could be key_file instead...
                 profile="default",
                 state_file='awsproviderstate.json',
                 nodes_per_block=1,
@@ -30,7 +29,7 @@ config = Config(
                 min_blocks=0,
                 walltime='01:00:00',
             ),
-            controller=Controller(public_ip=None),    # Please replace PUBLIC_IP with your public ip
+            controller=Controller(public_ip="18.208.186.203"),    # Please replace PUBLIC_IP with your public ip
         )
     ],
 )

@@ -41,34 +41,15 @@ config = Config(
 parsl.set_stream_logger()
 parsl.load(config)
 
-# @bash_app
-# def mysim(inputs=[], stdout='testing.stdout', stderr='testing.stderr'):
-#     return f'bash ${inputs[0]}'
-
-# # mysim(inputs=[os.path.join(os.getcwd(), "bashFile.sh")]).result()
-# mysim(inputs=["bashFile.sh"]).result()
-
-# with open('testing.stdout', 'r') as f:
-#     print(f.read())
-
-# App that echos an input message to an output file
 @bash_app
-def slowecho(message, outputs=[]):
-    return 'sleep 5; pwd &> {}'.format(outputs[0])
+def mysim(script_file, stdout=None, stderr=None):
+    return script_file
 
-# Call echo specifying the output file
-hello = slowecho('Hello World!', outputs=[os.path.join(os.getcwd(), 'hello-world.txt')])
+# mysim(inputs=[os.path.join(os.getcwd(), "bashFile.sh")]).result()
+x = mysim(os.path.abspath('bashFile.sh'), stdout="testing.stdout", stderr="testing.stderr")
 
-# The AppFuture's outputs attribute is a list of DataFutures
-print(hello.outputs)
+# This blocks until the script execution is completed
+print(x.result())
 
-# Also check the AppFuture
-print ('Done: %s' % hello.done())
-
-# Print the contents of the output DataFuture when complete
-with open(hello.outputs[0].result(), 'r') as f:
-     print(f.read())
-
-# Now that this is complete, check the DataFutures again, and the Appfuture
-print(hello.outputs)
-print ('Done: %s' % hello.done())
+with open(x.stdout, 'r') as f:
+    print("Content of stdout :", f.read())

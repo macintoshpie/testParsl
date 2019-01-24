@@ -6,6 +6,8 @@ from parsl.config import Config
 from parsl.executors.ipp import IPyParallelExecutor
 from parsl.executors.ipp_controller import Controller
 
+from parsl.addresses import address_by_route, address_by_query, address_by_hostname
+
 from parsl.app.app import python_app, bash_app
 
 
@@ -18,9 +20,9 @@ config = Config(
         IPyParallelExecutor(
             label='ec2_single_node',
             provider=AWSProvider(
-                'ami-01e3b8c3a51e88954',    # Please replace image_id with your image id, e.g., 'ami-82f4dae7'
-                region='us-east-1',    # Please replace region with your region
-                key_name='testVirginiaKey',
+                'ami-08c7f5a9a205fa125', # image with strelka installed
+                region='us-east-2',
+                key_name='testKeyPair',
                 profile="default",
                 state_file='awsproviderstate.json',
                 nodes_per_block=1,
@@ -29,18 +31,17 @@ config = Config(
                 min_blocks=0,
                 walltime='01:00:00',
             ),
-            controller=Controller(public_ip="18.208.186.203"),    # Please replace PUBLIC_IP with your public ip
+            controller=Controller(public_ip="10.0.90.253"),
         )
     ],
 )
 
-parsl.load(config)
 parsl.set_stream_logger()
+parsl.load(config)
 
-@python_app
+@bash_app
 def mysim():
-    from random import randint
-    """Generate a random integer and return it"""
-    return randint(1,100)
+    # return 'bash ${STRELKA_INSTALL_PATH}/bin/runStrelkaGermlineWorkflowDemo.bash'
+    return 'echo "Hello world"'
 
 print(mysim().result())

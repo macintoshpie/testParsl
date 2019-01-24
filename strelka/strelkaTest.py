@@ -1,3 +1,5 @@
+import os
+
 import parsl
 
 from parsl.providers import AWSProvider

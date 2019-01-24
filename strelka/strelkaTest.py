@@ -41,13 +41,34 @@ config = Config(
 parsl.set_stream_logger()
 parsl.load(config)
 
+# @bash_app
+# def mysim(inputs=[], stdout='testing.stdout', stderr='testing.stderr'):
+#     return f'bash ${inputs[0]}'
+
+# # mysim(inputs=[os.path.join(os.getcwd(), "bashFile.sh")]).result()
+# mysim(inputs=["bashFile.sh"]).result()
+
+# with open('testing.stdout', 'r') as f:
+#     print(f.read())
+
+# App that echos an input message to an output file
 @bash_app
-def mysim(inputs=[], stdout='testing.stdout', stderr='testing.stderr'):
-    # return 'bash ${STRELKA_INSTALL_PATH}/bin/runStrelkaGermlineWorkflowDemo.bash'
-    # return 'echo "Hello world"'
-    return f'bash ${inputs[0]}'
+def slowecho(message, outputs=[]):
+    return 'sleep 5; pwd &> {outputs[0]}'
 
-mysim(inputs=[os.path.join(os.getcwd(), "bashFile.sh")]).result()
+# Call echo specifying the output file
+hello = slowecho('Hello World!', outputs=[os.path.join(os.getcwd(), 'hello-world.txt')])
 
-with open('testing.stdout', 'r') as f:
-    print(f.read())
+# The AppFuture's outputs attribute is a list of DataFutures
+print(hello.outputs)
+
+# Also check the AppFuture
+print ('Done: %s' % hello.done())
+
+# Print the contents of the output DataFuture when complete
+with open(hello.outputs[0].result(), 'r') as f:
+     print(f.read())
+
+# Now that this is complete, check the DataFutures again, and the Appfuture
+print(hello.outputs)
+print ('Done: %s' % hello.done())

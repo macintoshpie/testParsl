@@ -31,7 +31,7 @@ config = Config(
                 min_blocks=0,
                 walltime='01:00:00',
             ),
-            controller=Controller(public_ip="10.0.90.253"),
+            controller=Controller(public_ip="10.0.14.150"),
         )
     ],
 )

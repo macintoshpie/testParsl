@@ -54,7 +54,7 @@ parsl.load(config)
 # App that echos an input message to an output file
 @bash_app
 def slowecho(message, outputs=[]):
-    return 'sleep 5; pwd &> {outputs[0]}'
+    return 'sleep 5; pwd &> {}'.format(outputs[0])
 
 # Call echo specifying the output file
 hello = slowecho('Hello World!', outputs=[os.path.join(os.getcwd(), 'hello-world.txt')])

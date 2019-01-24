@@ -40,8 +40,12 @@ parsl.set_stream_logger()
 parsl.load(config)
 
 @bash_app
-def mysim():
+def mysim(inputs=[], stdout='testing.stdout', stderr='testing.stderr'):
     # return 'bash ${STRELKA_INSTALL_PATH}/bin/runStrelkaGermlineWorkflowDemo.bash'
-    return 'echo "Hello world"'
+    # return 'echo "Hello world"'
+    return f'bash ${inputs[0]}'
 
-print(mysim().result())
+mysim(bashFile.sh).result()
+
+with open('testing.stdout', 'r') as f:
+    print(f.read())

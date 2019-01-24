@@ -45,7 +45,7 @@ def mysim(inputs=[], stdout='testing.stdout', stderr='testing.stderr'):
     # return 'echo "Hello world"'
     return f'bash ${inputs[0]}'
 
-mysim(bashFile.sh).result()
+mysim(inputs=[os.path.join(os.getcwd(), "bashFile.sh")]).result()
 
 with open('testing.stdout', 'r') as f:
     print(f.read())

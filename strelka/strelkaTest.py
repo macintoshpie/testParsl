@@ -8,14 +8,7 @@ from parsl.config import Config
 from parsl.executors.ipp import IPyParallelExecutor
 from parsl.executors.ipp_controller import Controller
 
-from parsl.addresses import address_by_route, address_by_query, address_by_hostname
-
 from parsl.app.app import python_app, bash_app
-
-
-# This is an example config, make sure to
-#        replace the specific values below with the literal values
-#          (e.g., 'USERNAME' -> 'your_username')
 
 config = Config(
     executors=[
@@ -42,8 +35,19 @@ parsl.set_stream_logger()
 parsl.load(config)
 
 @python_app
-def mysim():
-    cmd = """#!/usr/bin/env bash
+def timeApp(cmd):
+    with open("/home/ubuntu/timeAppScript.sh", "w") as text_file:
+        text_file.write(cmd)
+
+    import subprocess
+    import time
+    t1 = time.time()
+    proc = subprocess.Popen(['bash', '/home/ubuntu/timeAppScript.sh'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    outs, errs = proc.communicate()
+    t2 = time.time()
+    return (outs, t2 - t1)
+
+cmd = """#!/usr/bin/env bash
 
 echo "Hello World"
 
@@ -162,22 +166,6 @@ echo 1>&2
 echo "**** Demo/verification successfully completed" 1>&2
 echo 1>&2
 """
-    with open("/home/ubuntu/profile.sh", "w") as text_file:
-        text_file.write(cmd)
 
-    import subprocess
-    proc = subprocess.Popen(['bash', '/home/ubuntu/profile.sh'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    try:
-        outs, errs = proc.communicate(timeout=200)
-        return outs
-    except TimeoutExpired:
-        proc.kill()
-        outs, errs = proc.communicate(timeout=300)
-        return outs
-
-# mysim(inputs=[os.path.join(os.getcwd(), "bashFile.sh")]).result()
-x = mysim()
-
-# This blocks until the script execution is completed
+x = timeApp(cmd)
 print(x.result())
-print(x)

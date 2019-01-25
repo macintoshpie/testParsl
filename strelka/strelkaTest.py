@@ -75,7 +75,7 @@ echo $STRELKA_INSTALL_PATH
 set -o nounset
 set -o pipefail
 
-scriptDir="home/ubuntu/strelka2/bin"
+scriptDir="/home/ubuntu/strelka2/bin"
 demoDir=$scriptDir/../share/demo/strelka
 dataDir=$demoDir/data
 expectedDir=$demoDir/expectedResults

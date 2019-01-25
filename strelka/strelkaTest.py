@@ -158,42 +158,6 @@ else
     echo 1>&2
 fi
 
-
-#
-# Step 3: Compare results to expected calls
-#
-#resultsDir=$analysisDir/results/variants
-#echo 1>&2
-#echo "**** Starting comparison to expected results." 1>&2
-#echo "**** Expected results dir: $expectedDir" 1>&2
-#echo "**** Demo results dir: $resultsDir" 1>&2
-#echo 1>&2
-
-filterVariableMetadata() {
-    awk '!/^##(fileDate|source_version|startTime|reference|cmdline)/'
-}
-
-#for f in $(ls $expectedDir); do
-#    efile=$expectedDir/$f
-#    rfile=$resultsDir/$f
-#    diff <(gzip -dc $efile | filterVariableMetadata) <(gzip -dc $rfile | filterVariableMetadata)
-
-#    if [ $? -ne 0 ]; then
-#        cat<<END 1>&2
-#
-#ERROR: Found difference between demo and expected results in file '$f'.
-#       Expected file: $efile
-#       Demo results file: $rfile
-#
-#END
-#        exit 1
-#    fi
-#done
-
-#echo 1>&2
-#echo "**** No differences between expected and computed results." 1>&2
-#echo 1>&2
-
 echo 1>&2
 echo "**** Demo/verification successfully completed" 1>&2
 echo 1>&2

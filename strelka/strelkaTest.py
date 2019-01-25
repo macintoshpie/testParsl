@@ -170,6 +170,9 @@ x = mysim(stdout="testing.stdout", stderr="testing.stderr")
 
 # This blocks until the script execution is completed
 print(x.result())
+print(x)
+print(dir(x))
+print(x.stdout)
 
 with open(x.stdout, 'r') as f:
     print("Content of stdout :", f.read())

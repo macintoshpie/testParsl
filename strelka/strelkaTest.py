@@ -43,7 +43,7 @@ parsl.load(config)
 
 @python_app
 def mysim():
-    cmdX = """#!/usr/bin/env bash
+    cmd = """#!/usr/bin/env bash
 
 echo "Hello World"
 
@@ -75,7 +75,7 @@ echo $STRELKA_INSTALL_PATH
 set -o nounset
 set -o pipefail
 
-scriptDir=$(dirname $0)
+scriptDir="home/ubuntu/strelka2/bin"
 demoDir=$scriptDir/../share/demo/strelka
 dataDir=$demoDir/data
 expectedDir=$demoDir/expectedResults
@@ -162,10 +162,6 @@ echo 1>&2
 echo "**** Demo/verification successfully completed" 1>&2
 echo 1>&2
 """
-
-    cmd = """#!/usr/bin/env bash
-echo 'Hello World'
-"""
     with open("/home/ubuntu/profile.sh", "w") as text_file:
         text_file.write(cmd)
 
@@ -185,8 +181,3 @@ x = mysim()
 # This blocks until the script execution is completed
 print(x.result())
 print(x)
-print(dir(x))
-print(x.stdout)
-
-with open(x.stdout, 'r') as f:
-    print("Content of stdout :", f.read())

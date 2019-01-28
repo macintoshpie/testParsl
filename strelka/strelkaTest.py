@@ -97,7 +97,7 @@ def registerResult(params, res):
 
 paramDefs = {
     'nCPUs': (1, 4),
-    'memPerCPU': (1, 4)
+    'memPerCPU': (2, 4)
 }
 
 bo = BayesianOptimization(

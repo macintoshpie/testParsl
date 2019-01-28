@@ -118,13 +118,16 @@ else:
 
 @python_app
 def timeApp(cmd, parameters):
+    import os
+    from string import Template
+    import subprocess
+    import time
+
     scriptPath = os.path.expanduser("~/timeAppScript.sh")
     cmd = Template(cmd).safe_substitute(parameters)
     with open(scriptPath, "w") as text_file:
         text_file.write(cmd)
 
-    import subprocess
-    import time
     t1 = time.time()
     proc = subprocess.Popen(['bash', scriptPath], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     outs, errs = proc.communicate()

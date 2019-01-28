@@ -80,7 +80,7 @@ echo "nCPUs: ${nCPUs}"
 echo "memPerCPU: ${memPerCPU}"
 """
     else:
-        with open(os.path.dirname(os.path.abspath(__file__))+'/strelkaDemo.bash', 'r') as f:
+        with open(os.path.dirname(os.path.abspath(__file__))+'/sleepDemo.bash', 'r') as f:
             cmd = f.read()
     print(cmd)
     print("RUNNING WITH PARAMS: ", params)

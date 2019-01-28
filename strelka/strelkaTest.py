@@ -2,16 +2,15 @@ import os
 import sys
 
 import parsl
-
 from parsl.providers import AWSProvider
-
 from parsl.config import Config
 from parsl.executors.ipp import IPyParallelExecutor
 from parsl.executors.ipp_controller import Controller
 from parsl.executors.threads import ThreadPoolExecutor
-
-
 from parsl.app.app import python_app, bash_app
+
+from bayes_opt import BayesianOptimization
+from bayes_opt import UtilityFunction
 
 awsConfig = Config(
     executors=[
@@ -44,74 +43,10 @@ localConfig = Config(
 )
 
 parsl.set_stream_logger()
-
-cmd = """#!/usr/bin/env bash
-#
-# Execute small germline variant demonstration/verification run
-#
-
-set -o nounset
-set -o pipefail
-
-scriptDir="/home/ubuntu/strelka2/bin"
-demoDir=$scriptDir/../share/demo/strelka
-dataDir=$demoDir/data
-expectedDir=$demoDir/expectedResults
-
-analysisDir=./strelkaGermlineDemoAnalysis
-configScript=$scriptDir/configureStrelkaGermlineWorkflow.py
-demoConfigFile=$demoDir/strelkaGermlineDemoConfig.ini
-
-
-# verify paths are correctly configured
-if [ ! -e $configScript ]; then
-    cat<<END 1>&2
-ERROR: Strelka must be installed prior to running demo.
-END
-    exit 2
-fi
-
-if [ -e $analysisDir ]; then
-    cat<<END 1>&2
-ERROR: Demo analysis directory already exists: '$analysisDir'
-       Please remove/move this to rerun demo.
-END
-    exit 2
-fi
-
-# create workflow
-cmd="$configScript \
---bam='$dataDir/NA12891_demo20.bam' \
---bam='$dataDir/NA12892_demo20.bam' \
---referenceFasta='$dataDir/demo20.fa' \
---callMemMb=1024 \
---exome \
---disableSequenceErrorEstimation \
---runDir=$analysisDir"
-
-eval $cmd
-
-# run workflow
-cmd="$analysisDir/runWorkflow.py -m local -j ${nCPUs} -g ${memPerCPU}"
-$cmd
-
-
-if [ $? -ne 0 ]; then
-    cat<<END 1>&2
-ERROR: Workflow execution step failed
-END
-    exit 1
-fi
-"""
-
+debug = False
 if sys.platform == "darwin":
     parsl.load(localConfig)
-    cmd = """#!/usr/bin/env bash
-bashVar="This is a bash var"
-echo "Hello World - ${bashVar}"
-echo "nCPUs: ${nCPUs}"
-echo "memPerCPU: ${memPerCPU}"
-"""
+    debug = True
 else:
     parsl.load(awsConfig)
 
@@ -131,11 +66,69 @@ def timeApp(cmd, parameters):
     proc = subprocess.Popen(['bash', scriptPath], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     outs, errs = proc.communicate()
     t2 = time.time()
-    return (outs, t2 - t1)
+    return (proc.returncode, outs, t2 - t1)
 
-params = {
-    'nCPUs': 1,
-    'memPerCPU': 4
+
+def prepareAndRun(params, debug=False):
+    params = {key: int(val) for key, val in params.items()}
+    cmd = ''
+    if debug:
+        cmd = """#!/usr/bin/env bash
+bashVar="This is a bash var"
+echo "Hello World - ${bashVar}"
+echo "nCPUs: ${nCPUs}"
+echo "memPerCPU: ${memPerCPU}"
+"""
+    else:
+        with open(os.path.dirname(os.path.abspath(__file__))+'/strelkaDemo.bash', 'r') as f:
+            cmd = f.read()
+    print(cmd)
+    print("RUNNING WITH PARAMS: ", params)
+    return timeApp(cmd, params)
+
+def registerResult(params, res):
+    if res[0] == 0:
+        bo.register(
+            params=params,
+            target=res[2],
+        )
+    else:
+        raise Exception("NON_ZERO_EXIT:\n  PARAMS: {}\n  OUT: {}".format(params, res[1]))
+
+paramDefs = {
+    'nCPUs': (1, 4),
+    'memPerCPU': (1, 4)
 }
-x = timeApp(cmd, params)
-print(x.result())
+
+bo = BayesianOptimization(
+    f=prepareAndRun,
+    pbounds=paramDefs,
+    verbose=2,
+    random_state=1,
+)
+
+utility = UtilityFunction(kind="ucb", kappa=2.5, xi=0.0)
+
+n_init = 2
+n_iter = 2
+
+# run initial random points in parallel
+init_params = []
+init_futures = []
+for i in range(n_init):
+    init_params.append(bo.suggest(utility))
+    init_futures.append(prepareAndRun(init_params[i], debug))
+
+# Wait for initial results before continuing
+# add results to GP model
+for init_point, init_fut in zip(init_params, init_futures):
+    res = init_fut.result()
+    registerResult(init_point, res)
+
+# run remaining tests
+for i in range(n_iter):
+    probe_point = bo.suggest(utility)
+    res = prepareAndRun(probe_point, debug).result()
+    registerResult(probe_point, res)
+
+print("FINISHED: {}".format(bo.max))

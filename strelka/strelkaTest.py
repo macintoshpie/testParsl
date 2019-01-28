@@ -1,6 +1,5 @@
 import os
 import sys
-from string import Template
 
 import parsl
 

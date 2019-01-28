@@ -55,3 +55,6 @@ ERROR: Workflow execution step failed
 END
     exit 1
 fi
+
+# remove generated data directory
+rm -rf $analysisDir

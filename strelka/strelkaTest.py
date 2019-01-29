@@ -80,7 +80,7 @@ echo "nCPUs: ${nCPUs}"
 echo "memPerCPU: ${memPerCPU}"
 """
     else:
-        with open(os.path.dirname(os.path.abspath(__file__))+'/sleepDemo.bash', 'r') as f:
+        with open(os.path.dirname(os.path.abspath(__file__))+'/strelkaDemo.bash', 'r') as f:
             cmd = f.read()
     print(cmd)
     print("RUNNING WITH PARAMS: ", params)
@@ -88,9 +88,10 @@ echo "memPerCPU: ${memPerCPU}"
 
 def registerResult(params, res):
     if res[0] == 0:
+        # invert result (trying to MINIMIZE time)
         bo.register(
             params=params,
-            target=res[2],
+            target=-res[2],
         )
     else:
         raise Exception("NON_ZERO_EXIT:\n  PARAMS: {}\n  OUT: {}".format(params, res[1]))
@@ -101,7 +102,7 @@ paramDefs = {
 }
 
 bo = BayesianOptimization(
-    f=prepareAndRun,
+    f=None, # prepareAndRun,
     pbounds=paramDefs,
     verbose=2,
     random_state=1,

@@ -8,8 +8,8 @@ def timeCmd(cmd, params, invert):
   import subprocess
   import time
 
-  cmd_script = os.path.expanduser("~/timeAppScript.sh")
-  cmd = Template(cmd).safe_substitute(parameters)
+  cmd_script = os.path.expanduser("~/timeCmdScript.sh")
+  cmd = Template(cmd).safe_substitute(params)
   with open(cmd_script, "w") as f:
     f.write(cmd)
 
@@ -20,4 +20,4 @@ def timeCmd(cmd, params, invert):
   total_time = t2 - t1
   if invert:
     total_time = -total_time
-  return (proc.returncode, outs, total_time)
+  return (proc.returncode, outs.decode(), total_time)

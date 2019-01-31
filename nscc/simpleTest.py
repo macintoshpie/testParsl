@@ -1,7 +1,7 @@
 import parsl
 
 from parsl.channels import LocalChannel
-from parsl.launchers import AprunLauncher
+from parsl.launchers import SingleNodeLauncher
 from parsl.providers import TorqueProvider
 
 from parsl.config import Config
@@ -31,7 +31,7 @@ config = Config(
         nodes_per_block=1,
         init_blocks=2,
         max_blocks=1,
-        launcher=AprunLauncher(),
+        launcher=SingleNodeLauncher(),
         scheduler_options='#PBS -P 11001079\n#PBS -l mem=1G\n',
         worker_init='',
         walltime="00:5:00"

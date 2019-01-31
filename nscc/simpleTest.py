@@ -29,7 +29,7 @@ config = Config(
       provider=TorqueProvider(
         channel=LocalChannel(),
         nodes_per_block=1,
-        init_blocks=2,
+        init_blocks=1,
         max_blocks=1,
         launcher=SingleNodeLauncher(),
         scheduler_options='#PBS -P 11001079\n#PBS -l mem=1G\n',

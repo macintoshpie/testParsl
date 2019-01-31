@@ -1,6 +1,8 @@
 import parsl
 
-from parsl.providers import AWSProvider
+from parsl.channels import LocalChannel
+from parsl.launchers import AprunLauncher
+from parsl.providers import TorqueProvider
 
 from parsl.config import Config
 from parsl.executors.ipp import IPyParallelExecutor

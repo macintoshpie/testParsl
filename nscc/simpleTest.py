@@ -32,11 +32,11 @@ config = Config(
         init_blocks=2,
         max_blocks=1,
         launcher=AprunLauncher(),
-        scheduler_options='-P 11001079 -l mem=1G',
+        scheduler_options='#PBS -P 11001079\n#PBS -l mem=1G\n',
         worker_init='',
         walltime="00:5:00"
       ),
-      controller=Controller(public_ip='192.168.25.4'),    # Please replace PUBLIC_IP with your public ip
+      controller=Controller(public_ip='192.168.153.3'),    # Please replace PUBLIC_IP with your public ip
     )
   ],
 )

@@ -10,13 +10,8 @@ from parsl.executors.ipp_controller import Controller
 
 from parsl.app.app import python_app, bash_app
 
-initCmd = """#!/usr/bin/env bash
-module load anaconda/3
-conda create --name parsl_py36 python=3.6
+initCmd = """module load anaconda/3
 source activate parsl_py36
-
-# install parsl
-python3 -m pip install parsl
 """
 
 userHome = '/home/users/industry/uchicago/tsummer2'
@@ -33,7 +28,7 @@ config = Config(
         max_blocks=1,
         launcher=SingleNodeLauncher(),
         scheduler_options='#PBS -P 11001079\n#PBS -l mem=1G\n',
-        worker_init='',
+        worker_init=initCmd,
         walltime="00:5:00"
       ),
       controller=Controller(public_ip='192.168.153.3'),    # Please replace PUBLIC_IP with your public ip

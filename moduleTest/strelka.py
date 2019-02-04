@@ -68,7 +68,7 @@ awsConfig = Config(
 )
 
 cmd = """
-cd ~/data
+cd /home/ubuntu/data
 rm -rf analysis
 
 ${STRELKA_INSTALL_PATH}/bin/configureStrelkaGermlineWorkflow.py \

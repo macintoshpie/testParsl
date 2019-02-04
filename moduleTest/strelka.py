@@ -70,6 +70,7 @@ awsConfig = Config(
 cmd = """
 cd /home/ubuntu/data
 rm -rf analysis
+export STRELKA_INSTALL_PATH=/home/ubuntu/strelka2
 
 ${STRELKA_INSTALL_PATH}/bin/configureStrelkaGermlineWorkflow.py \
   --ref GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna \

@@ -13,7 +13,7 @@ awsConfig = Config(
       label='ec2_single_node',
       provider=AWSProvider(
         'ami-09841c7042bfeaf66',
-        instance_type='m5a.4xlarge',
+        instance_type='m5.2xlarge',
         spot_max_bid=1,
         region='us-east-2',
         key_name='testKeyPair',
@@ -44,8 +44,8 @@ analysis/runWorkflow.py -m local -j ${nCPUs} -g ${memPerCPU}
 """
 
 cmdParams = {
-  'nCPUs': (2, 16),
-  'memPerCPU': (8, 64)
+  'nCPUs': (2, 8),
+  'memPerCPU': (8, 32)
 }
 
 po = ParslOptimizer(

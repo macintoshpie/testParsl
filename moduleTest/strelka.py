@@ -6,7 +6,43 @@ from parsl.executors.threads import ThreadPoolExecutor
 
 from paropt import ParslOptimizer
 
-from parslLibrary import timeCmd
+# FIXME: getting error when running on aws:
+# Traceback (most recent call last):
+#   File "/home/ubuntu/miniconda3/envs/parsl_py36/lib/python3.6/site-packages/parsl/dataflow/dflow.py", line 256, in handle_exec_update
+#     res = future.result()
+#   File "/home/ubuntu/miniconda3/envs/parsl_py36/lib/python3.6/concurrent/futures/_base.py", line 425, in result
+#     return self.__get_result()
+#   File "/home/ubuntu/miniconda3/envs/parsl_py36/lib/python3.6/concurrent/futures/_base.py", line 384, in __get_result
+#     raise self._exception
+#   File "/home/ubuntu/miniconda3/envs/parsl_py36/lib/python3.6/site-packages/ipyparallel/client/asyncresult.py", line 226, in _resolve_result
+#     raise r
+# ipyparallel.error.RemoteError: ModuleNotFoundError(No module named 'parslLibrary')
+# from parslLibrary import timeCmd
+
+from parsl.app.app import python_app
+
+# Parsl function for timing command execution time
+@python_app
+def timeCmd(cmd, params, invert):
+  import os
+  from string import Template
+  import subprocess
+  import time
+  import uuid
+
+  cmd_script = os.path.expanduser("~/timeCmdScript_{}.sh".format(uuid.uuid1()))
+  cmd = Template(cmd).safe_substitute(params)
+  with open(cmd_script, "w") as f:
+    f.write(cmd)
+
+  t1 = time.time()
+  proc = subprocess.Popen(['bash', cmd_script], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  outs, errs = proc.communicate()
+  t2 = time.time()
+  total_time = t2 - t1
+  if invert:
+    total_time = -total_time
+  return (proc.returncode, outs.decode(), total_time)
 
 awsConfig = Config(
   executors=[

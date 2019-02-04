@@ -10,8 +10,6 @@ from bayes_opt import UtilityFunction
 from bayes_opt.observer import JSONLogger
 from bayes_opt.event import Events
 
-from parslLibrary import timeCmd
-
 import numpy as np
 
 import matplotlib
@@ -20,8 +18,9 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
 class ParslOptimizer:
-  def __init__(self, parsl_config, command, command_params, init_points, n_iter, kappa=2.5):
+  def __init__(self, parsl_config, parsl_cmd, command, command_params, init_points, n_iter, kappa=2.5):
     self.parsl_config = parsl_config
+    self.parsl_cmd = parsl_cmd
     self.command = command
     self.command_params = command_params
 
@@ -72,7 +71,7 @@ class ParslOptimizer:
       if debug:
         cmd = '#!/usr/bin/env bash\n' + '\n'.join(['echo "{}: {}"'.format(n, params[n]) for n in params])
         print(cmd)
-      return timeCmd(cmd, params, True)
+      return self.parsl_cmd(cmd, params, True)
 
     # attempt to run initial, random points in parallel
     init_params = []

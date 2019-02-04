@@ -4,8 +4,9 @@ from parsl.executors.ipp import IPyParallelExecutor
 from parsl.executors.ipp_controller import Controller
 from parsl.executors.threads import ThreadPoolExecutor
 
-
 from paropt import ParslOptimizer
+
+from parslLibrary import timeCmd
 
 awsConfig = Config(
   executors=[
@@ -50,6 +51,7 @@ cmdParams = {
 
 po = ParslOptimizer(
   awsConfig,
+  timeCmd,
   command=cmd,
   command_params=cmdParams,
   init_points=2,

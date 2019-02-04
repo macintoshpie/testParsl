@@ -7,8 +7,9 @@ def timeCmd(cmd, params, invert):
   from string import Template
   import subprocess
   import time
+  import uuid
 
-  cmd_script = os.path.expanduser("~/timeCmdScript.sh")
+  cmd_script = os.path.expanduser("~/timeCmdScript_{}.sh".format(uuid.uuid1()))
   cmd = Template(cmd).safe_substitute(params)
   with open(cmd_script, "w") as f:
     f.write(cmd)

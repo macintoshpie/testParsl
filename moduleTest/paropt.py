@@ -7,6 +7,8 @@ from parsl.app.app import python_app
 
 from bayes_opt import BayesianOptimization
 from bayes_opt import UtilityFunction
+from bayes_opt.observer import JSONLogger
+from bayes_opt.event import Events
 
 from parslLibrary import timeCmd
 
@@ -32,6 +34,9 @@ class ParslOptimizer:
       random_state=1,
     )
     self.utility = UtilityFunction(kind="ucb", kappa=kappa, xi=0.0)
+    self.logger = JSONLogger(path="./bayes_logs.json")
+    self.optimizer.subscribe(Events.OPTMIZATION_STEP, self.logger)
+
   
   def registerResult(params, res):
     if res[0] == 0:
@@ -42,7 +47,7 @@ class ParslOptimizer:
     else:
       raise Exception("NON_ZERO_EXIT:\n  PARAMS: {}\n  OUT: {}".format(params, res[1]))
   
-  def run(self, debug):
+  def run(self, savePlots=False, debug=False):
     parsl.set_stream_logger()
 
     # load configuration - run on local threads if debugging
@@ -59,13 +64,14 @@ class ParslOptimizer:
     else:
       parsl.load(self.parsl_config)
 
-    def prepareAndRun(params, debug=False):
+    def prepareAndRun(params, debug):
       """prepares parameters and run the parsl app"""
       # TODO: currently casting all to int - need to check configured type
       params = {key: int(val) for key, val in params.items()}
       cmd = self.command
       if debug:
         cmd = '#!/usr/bin/env bash\n' + '\n'.join(['echo "{}: {}"'.format(n, params[n]) for n in params])
+        print(cmd)
       return timeCmd(cmd, params, True)
 
     # attempt to run initial, random points in parallel
@@ -82,17 +88,19 @@ class ParslOptimizer:
       self.registerResult(init_point, res)
     
     # plot it
-    for p in self.command_params:
-      self.generatePlot(p)
+    if savePlots:
+      for p in self.command_params:
+        self.generatePlot(p)
     
     # run remaining tests
     for i in range(self.n_iter):
       probe_point = self.optimizer.suggest(self.utility)
       res = prepareAndRun(probe_point, debug).result()
       self.registerResult(probe_point, res)
-      # plot it
-      for p in self.command_params:
-        self.generatePlot(p)
+      if savePlots:
+        # plot it
+        for p in self.command_params:
+          self.generatePlot(p)
     
   def registerResult(self, point, result):
     if result[0] == 0:

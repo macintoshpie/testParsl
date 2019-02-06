@@ -6,7 +6,7 @@
 set -o nounset
 set -o pipefail
 
-scriptDir="/home/ubuntu/strelka2/bin"
+scriptDir="${STRELKA_INSTALL_PATH}/bin"
 demoDir=$scriptDir/../share/demo/strelka
 dataDir=$demoDir/data
 expectedDir=$demoDir/expectedResults

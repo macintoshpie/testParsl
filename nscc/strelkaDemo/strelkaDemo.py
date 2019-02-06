@@ -1,7 +1,9 @@
-from paropt import ParslOptimizer
+import os
+
 from parsl.app.app import python_app
 
-from ..config import nsccConfig
+from paropt import ParslOptimizer
+from config import nsccConfig
 
 # Parsl function for timing command execution time
 @python_app
@@ -27,7 +29,7 @@ def timeCmd(cmd, params, invert):
   return (proc.returncode, outs.decode(), total_time)
 
 # read in commands from local bash file
-while open('strelkaDemo.bash', 'r') as f:
+with open(os.path.dirname(os.path.abspath(__file__))+'/strelkaDemo.bash', 'r') as f:
   cmd = f.read()
 
 cmdParams = {

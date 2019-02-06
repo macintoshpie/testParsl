@@ -13,3 +13,7 @@ pip install --no-binary pyzmq pyzmq
 cd ~
 git clone -b refactor/torque https://github.com/macintoshpie/parsl.git
 pip install -e parsl/
+
+# install packages for optimizer
+pip install bayesian-optimization
+pip install matplotlib

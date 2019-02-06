@@ -3,10 +3,6 @@ from parsl.app.app import python_app, bash_app
 
 from config import nsccConfig
 
-initCmd = """module load anaconda/3
-source activate parsl_py36
-"""
-
 userHome = '/home/users/industry/uchicago/tsummer2'
 
 parsl.set_stream_logger()

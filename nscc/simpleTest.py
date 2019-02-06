@@ -1,14 +1,7 @@
 import parsl
-
-from parsl.channels import LocalChannel
-from parsl.launchers import SingleNodeLauncher
-from parsl.providers import TorqueProvider
-
-from parsl.config import Config
-from parsl.executors.ipp import IPyParallelExecutor
-from parsl.executors.ipp_controller import Controller
-
 from parsl.app.app import python_app, bash_app
+
+from config import nsccConfig
 
 initCmd = """module load anaconda/3
 source activate parsl_py36
@@ -16,29 +9,8 @@ source activate parsl_py36
 
 userHome = '/home/users/industry/uchicago/tsummer2'
 
-config = Config(
-  executors=[
-    IPyParallelExecutor(
-      label='nscc_exec',
-      workers_per_node=1,
-      provider=TorqueProvider(
-        cmd_timeout=60,
-        channel=LocalChannel(),
-        nodes_per_block=1,
-        init_blocks=1,
-        max_blocks=1,
-        launcher=SingleNodeLauncher(),
-        scheduler_options='#PBS -P 11001079\n#PBS -l mem=1G\n',
-        worker_init=initCmd,
-        walltime="00:10:00"
-      ),
-      controller=Controller(public_ip='192.168.153.3'),    # Please replace PUBLIC_IP with your public ip
-    )
-  ],
-)
-
 parsl.set_stream_logger()
-parsl.load(config)
+parsl.load(nsccConfig)
 
 @python_app
 def mysim():

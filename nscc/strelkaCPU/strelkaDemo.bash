@@ -24,6 +24,8 @@ END
     exit 2
 fi
 
+rm -rf $analysisDir
+
 if [ -e $analysisDir ]; then
     cat<<END 1>&2
 ERROR: Demo analysis directory already exists: '$analysisDir'

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -P 11001079
+#PBS -l select=1:ncpus=1:mem=100M
+#PBS -l walltime=20:00:00
+#PBS -N Strelka_Head
+#PBS -o /home/users/industry/uchicago/tsummer2/outputfiles/Strelka_Head.o
+#PBS -e /home/users/industry/uchicago/tsummer2/errorfiles/Strelka_Head.e
+
+module load anaconda/3
+source activate parsl_py36
+
+cd /home/users/industry/uchicago/tsummer2/testParsl/nscc/strelkaDemo
+python strelkaDemo.py

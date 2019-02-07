@@ -6,6 +6,8 @@ from parsl.config import Config
 from parsl.executors.ipp import IPyParallelExecutor
 from parsl.executors.ipp_controller import Controller
 
+from parsl.addresses import address_by_interface
+
 # config for runnnig on NSCC's Aspire
 
 initCmd = """module load anaconda/3
@@ -28,7 +30,7 @@ nsccConfig = Config(
         worker_init=initCmd,
         walltime="00:10:00"
       ),
-      controller=Controller(public_ip='192.168.153.3'),    # Please replace PUBLIC_IP with your public ip
+      controller=Controller(public_ip=address_by_interface('ib0')),    # Please replace PUBLIC_IP with your public ip
     )
   ],
 )

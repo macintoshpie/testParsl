@@ -16,7 +16,7 @@ nsccConfig = Config(
   executors=[
     IPyParallelExecutor(
       label='nscc_exec',
-      workers_per_node=24,
+      workers_per_node=1,
       provider=TorqueProvider(
         cmd_timeout=120,
         channel=LocalChannel(),

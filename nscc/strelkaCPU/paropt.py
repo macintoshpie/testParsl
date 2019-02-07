@@ -37,13 +37,15 @@ class ParslOptimizer:
     self.optimizer.subscribe(Events.OPTMIZATION_STEP, self.logger)
 
   
-  def registerResult(params, res):
-    if res[0] == 0:
-      self.optimizer.register(
-        params=params,
-        target=res[2],
-      )
-    else:
+  def registerResult(self, params, res):
+    # result is assumed to be validated
+    self.optimizer.register(
+      params=params,
+      target=res[2],
+    )
+  
+  def validateResult(self, params, res):
+    if res[0] != 0:
       raise Exception("NON_ZERO_EXIT:\n  PARAMS: {}\n  OUT: {}".format(params, res[1]))
   
   def run(self, savePlots=False, debug=False):
@@ -73,18 +75,21 @@ class ParslOptimizer:
         print(cmd)
       return self.parsl_cmd(cmd, params, True)
 
-    # attempt to run initial, random points in parallel
+    # run initial random points
     init_params = []
-    init_futures = []
+    init_results = []
     for i in range(self.init_points):
       init_params.append(self.optimizer.suggest(self.utility))
-      init_futures.append(prepareAndRun(init_params[i], debug))
-    
-    # Wait for initial results before continuing
+      # wait for the result
+      # FIXME: originally these points were run in parallel, but then I realized
+      # the tasks were being sent to the same block/node, which I don't want
+      res = prepareAndRun(init_params[i], debug).result()
+      self.validateResult(init_params[i], res)
+      init_results.append(res)
+
     # add results to GP model
-    for init_point, init_fut in zip(init_params, init_futures):
-      res = init_fut.result()
-      self.registerResult(init_point, res)
+    for init_point, init_res in zip(init_params, init_results):
+      self.registerResult(init_point, init_res)
     
     # plot it
     if savePlots:
@@ -95,20 +100,12 @@ class ParslOptimizer:
     for i in range(self.n_iter):
       probe_point = self.optimizer.suggest(self.utility)
       res = prepareAndRun(probe_point, debug).result()
+      self.validateResult(probe_point, res)
       self.registerResult(probe_point, res)
       if savePlots:
         # plot it
         for p in self.command_params:
           self.generatePlot(p)
-    
-  def registerResult(self, point, result):
-    if result[0] == 0:
-      self.optimizer.register(
-          params=point,
-          target=result[2],
-      )
-    else:
-      raise Exception("NON_ZERO_EXIT:\n  PARAMS: {}\n  OUT: {}".format(point, result[1]))
   
   @property
   def max(self):

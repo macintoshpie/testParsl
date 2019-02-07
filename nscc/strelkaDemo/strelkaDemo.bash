@@ -45,7 +45,7 @@ cmd="$configScript \
 eval $cmd
 
 # run workflow
-cmd="$analysisDir/runWorkflow.py -m local -j ${nCPUs} -g ${memPerCPU}"
+cmd="$analysisDir/runWorkflow.py -m local -j ${nCPUs}"
 $cmd
 
 

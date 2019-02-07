@@ -33,8 +33,7 @@ with open(os.path.dirname(os.path.abspath(__file__))+'/strelkaDemo.bash', 'r') a
   cmd = f.read()
 
 cmdParams = {
-  'nCPUs': (2, 24),
-  'memPerCPU': (8, 32)
+  'nCPUs': (2, 24)
 }
 
 po = ParslOptimizer(

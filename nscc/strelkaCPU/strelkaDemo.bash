@@ -11,7 +11,7 @@ demoDir=$scriptDir/../share/demo/strelka
 dataDir=$demoDir/data
 expectedDir=$demoDir/expectedResults
 
-analysisDir="./strelkaGermlineDemoAnalysis$(RANDOM)"
+analysisDir="./strelkaGermlineDemoAnalysis$RANDOM"
 configScript=$scriptDir/configureStrelkaGermlineWorkflow.py
 demoConfigFile=$demoDir/strelkaGermlineDemoConfig.ini
 

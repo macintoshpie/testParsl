@@ -15,7 +15,10 @@ source activate parsl_py36
 
 echo "Env setup"
 
-cd /home/users/industry/uchicago/tsummer2/testParsl/nscc/strelkaDemo
+cd /home/users/industry/uchicago/tsummer2/testParsl/nscc/strelkaCPU
 
 echo "Running task..."
+pwd
+ls
+
 python strelkaDemo.py

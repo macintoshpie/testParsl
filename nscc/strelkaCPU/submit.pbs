@@ -8,8 +8,14 @@
 #PBS -o /home/users/industry/uchicago/tsummer2/outputfiles/Strelka_Head.o
 #PBS -e /home/users/industry/uchicago/tsummer2/errorfiles/Strelka_Head.e
 
+echo "Started head task"
+
 module load anaconda/3
 source activate parsl_py36
 
+echo "Env setup"
+
 cd /home/users/industry/uchicago/tsummer2/testParsl/nscc/strelkaDemo
+
+echo "Running task..."
 python strelkaDemo.py

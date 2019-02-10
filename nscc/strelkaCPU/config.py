@@ -28,7 +28,7 @@ nsccConfig = Config(
         launcher=SimpleLauncher(),
         scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
         worker_init=initCmd,
-        walltime="00:10:00"
+        walltime="06:00:00"
       ),
       controller=Controller(public_ip=address_by_interface('ib0')),    # Please replace PUBLIC_IP with your public ip
     )

@@ -51,7 +51,7 @@ htxConfig = Config(
         init_blocks=1,
         max_blocks=1,
         launcher=SimpleLauncher(),
-        scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n,
+        scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
         worker_init=initCmd,
         walltime="06:00:00"
       ),      
@@ -73,7 +73,7 @@ annaConfig = config = Config(
         tasks_per_node=24,
         init_blocks=1,
         max_blocks=1,
-        scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n,
+        scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
         worker_init=initCmd,
         walltime='06:00:00'
       ),

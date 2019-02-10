@@ -49,7 +49,7 @@ cmdParams = {
 }
 
 po = ParslOptimizer(
-  nsccConfig,
+  annaConfig,
   timeCmd,
   command=cmd,
   command_params=cmdParams,

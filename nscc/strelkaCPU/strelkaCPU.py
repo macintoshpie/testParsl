@@ -7,7 +7,7 @@ from config import nsccConfig
 
 # Parsl function for timing command execution time
 @python_app
-def timeCmd(cmd, params, invert):
+def timeCmd(cmd, params):
   import os
   from string import Template
   import subprocess

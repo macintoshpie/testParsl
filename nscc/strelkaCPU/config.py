@@ -1,5 +1,5 @@
 from parsl.channels import LocalChannel
-from parsl.launchers import SingleNodeLauncher
+from parsl.launchers import SimpleLauncher
 from parsl.providers import TorqueProvider
 
 from parsl.config import Config
@@ -25,7 +25,7 @@ nsccConfig = Config(
         nodes_per_block=1,
         init_blocks=1,
         max_blocks=1,
-        launcher=SingleNodeLauncher(),
+        launcher=SimpleLauncher(),
         scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
         worker_init=initCmd,
         walltime="00:10:00"

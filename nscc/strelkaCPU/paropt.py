@@ -73,7 +73,7 @@ class ParslOptimizer:
       if debug:
         cmd = '#!/usr/bin/env bash\n' + '\n'.join(['echo "{}: {}"'.format(n, params[n]) for n in params])
         print(cmd)
-      return self.parsl_cmd(cmd, params, True)
+      return self.parsl_cmd(cmd, params)
 
     # run initial random points
     init_params = []

@@ -24,16 +24,28 @@ def timeCmd(cmd, params, invert):
   outs, errs = proc.communicate()
   t2 = time.time()
   total_time = t2 - t1
-  if invert:
-    total_time = -total_time
+  # invert b/c we are trying to minimize time
+  total_time = -total_time
+  # divide by number of seconds in a day to scale down
+  secs_in_day = 86400
+  total_time = total_time / secs_in_day
   return (proc.returncode, outs.decode(), total_time)
 
-# read in commands from local bash file
-with open(os.path.dirname(os.path.abspath(__file__))+'/strelkaDemo.bash', 'r') as f:
-  cmd = f.read()
+cmd = """
+${STRELKA_INSTALL_PATH}/bin/configureStrelkaGermlineWorkflow.py \
+  --ref /home/projects/11001079/references/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna \
+  --bam /home/projects/11001079/giab/NHGRI_Illumina300X_Chinesetrio_novoalign_bams/chr21.bam \
+  --runDir analysis
+
+analysis/runWorkflow.py -m local -j ${nCPUs} -g ${totalMem}
+
+# remove generated data directory
+rm -rf analysis
+"""
 
 cmdParams = {
-  'nCPUs': (2, 24)
+  'nCPUs': (2, 24),
+  'totalMem': (8, 96)
 }
 
 po = ParslOptimizer(

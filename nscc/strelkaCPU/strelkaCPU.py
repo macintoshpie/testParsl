@@ -14,7 +14,7 @@ def timeCmd(cmd, params):
   import time
   import uuid
 
-  cmd_script = os.path.expanduser("~/timeCmdScript_{}.sh".format(uuid.uuid1()))
+  cmd_script = os.path.expanduser("~/timeCmdScript_{}.sh".format(int(time.time())))
   cmd = Template(cmd).safe_substitute(params)
   with open(cmd_script, "w") as f:
     f.write(cmd)
@@ -32,6 +32,9 @@ def timeCmd(cmd, params):
   return (proc.returncode, outs.decode(), total_time)
 
 cmd = """
+# remove generated data directory
+rm -rf analysis
+
 ${STRELKA_INSTALL_PATH}/bin/configureStrelkaGermlineWorkflow.py \
   --ref /home/projects/11001079/references/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna \
   --bam /home/projects/11001079/giab/NHGRI_Illumina300X_Chinesetrio_novoalign_bams/chr21.bam \

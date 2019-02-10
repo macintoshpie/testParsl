@@ -1,4 +1,5 @@
 import os
+import time
 
 import parsl
 from parsl.executors.threads import ThreadPoolExecutor
@@ -33,7 +34,7 @@ class ParslOptimizer:
       random_state=1,
     )
     self.utility = UtilityFunction(kind="ucb", kappa=kappa, xi=0.0)
-    self.logger = JSONLogger(path="./bayes_logs.json")
+    self.logger = JSONLogger(path="./bayes_logs_{}.json".format(int(time.time())))
     self.optimizer.subscribe(Events.OPTMIZATION_STEP, self.logger)
 
   

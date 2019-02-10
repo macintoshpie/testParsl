@@ -53,28 +53,29 @@ htxConfig = Config(
         launcher=SimpleLauncher(),
         scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
         worker_init=initCmd,
-        walltime="06:00:00"
-      ),      
+        walltime="24:00:00"
+      ),
     )
   ],
 )
 
-# annaConfig = config = Config(
+# annaConfig = Config(
 #   executors=[
 #     HighThroughputExecutor(
 #       label="htex",
 #       worker_debug=True,
-#       max_workers=24,
+#       cores_per_worker=1,
 #       public_ip=get('https://api.ipify.org').text,
 #       provider=TorqueProvider(
 #         queue='normal',
 #         launcher=SimpleLauncher(),
 #         nodes_per_block=1,
+#         tasks_per_node=24,
 #         init_blocks=1,
 #         max_blocks=1,
-#         scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
-#         worker_init=initCmd,
-#         walltime='06:00:00'
+#         overrides='#PBS -P 11001079\nsource activate swag\n',
+#         queue_timeout=300,
+#         walltime='00:90:00'
 #       ),
 #     )
 #   ],

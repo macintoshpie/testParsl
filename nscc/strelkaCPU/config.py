@@ -59,24 +59,24 @@ htxConfig = Config(
   ],
 )
 
-annaConfig = config = Config(
-  executors=[
-    HighThroughputExecutor(
-      label="htex",
-      worker_debug=True,
-      max_workers=24,
-      public_ip=get('https://api.ipify.org').text,
-      provider=TorqueProvider(
-        queue='normal',
-        launcher=SimpleLauncher(),
-        nodes_per_block=1,
-        init_blocks=1,
-        max_blocks=1,
-        scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
-        worker_init=initCmd,
-        walltime='06:00:00'
-      ),
-    )
-  ],
-  retries=3
-)
+# annaConfig = config = Config(
+#   executors=[
+#     HighThroughputExecutor(
+#       label="htex",
+#       worker_debug=True,
+#       max_workers=24,
+#       public_ip=get('https://api.ipify.org').text,
+#       provider=TorqueProvider(
+#         queue='normal',
+#         launcher=SimpleLauncher(),
+#         nodes_per_block=1,
+#         init_blocks=1,
+#         max_blocks=1,
+#         scheduler_options='#PBS -P 11001079\n#PBS -l mem=96G\n',
+#         worker_init=initCmd,
+#         walltime='06:00:00'
+#       ),
+#     )
+#   ],
+#   retries=3
+# )

@@ -3,7 +3,7 @@ import os
 from parsl.app.app import python_app
 
 from paropt import ParslOptimizer
-from config import nsccConfig, htxConfig, annaConfig
+from config import nsccConfig, htxConfig
 
 # Parsl function for timing command execution time
 @python_app

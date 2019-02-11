@@ -16,11 +16,11 @@ with open(sys.argv[1]) as f:
 
 # create a script to submit job
 with open('submitTemplate.sh', 'r') as f:
-  submitScript = Template(f.read()).safe_substitute(**paropt_config)
-submitScriptName = 'submit_{}_{}.sh'.format(paropt_config['name'], int(time.time()))
-with open(submitScriptName, 'w') as f:
+  submitScript = Template(f.read()).safe_substitute(paropt_config_path=sys.argv[1], **paropt_config)
+submitScriptPath = 'submit_{}_{}.sh'.format(paropt_config['name'], int(time.time()))
+with open(submitScriptPath, 'w') as f:
   f.write(submitScript)
 
-cmd = Template(self.command).safe_substitute(params)
-proc = subprocess.Popen(['bash', cmd_script_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+proc = subprocess.Popen(['bash', submitScriptPath], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 outs, errs = proc.communicate()
+print(outs, errs)

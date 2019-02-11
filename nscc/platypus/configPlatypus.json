@@ -1,0 +1,11 @@
+{
+  "name": "platypus",
+  "script_path": "../platypus/runPlatypus.sh",
+  "parameters": {
+    "nCPU": [4, 24],
+    "bufferSize": [100000, 400000]
+  },
+  "walltime": "24:00:00",
+  "init_points": 2,
+  "n_iter": 3
+}

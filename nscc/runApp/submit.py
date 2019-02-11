@@ -2,6 +2,7 @@ import json
 from string import Template
 import time
 import subprocess
+import sys
 
 HELP = """Usage:
 python3 submit.py <paropt_config_path>

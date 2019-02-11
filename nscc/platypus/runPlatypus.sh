@@ -6,4 +6,5 @@ vcf="${HOME}/results/chr21platypus.vcf.gz"
 # see here for configs:
 # https://www.well.ox.ac.uk/research/research-groups/lunter-group/softwares/platypus-documentation
 
+source activate platypus_py27
 platypus callVariants --bamFiles=${bam} --refFile=${ref} --output=${vcf} --nCPU ${nCPU} --bufferSize ${bufferSize}

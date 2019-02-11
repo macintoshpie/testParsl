@@ -1,5 +1,6 @@
 import os
 import time
+from string import Template
 
 import parsl
 from parsl.executors.threads import ThreadPoolExecutor
@@ -66,11 +67,11 @@ class ParslOptimizer:
       """prepares parameters and run the parsl app"""
       # TODO: currently casting all to int - need to check configured type
       params = {key: int(val) for key, val in params.items()}
-      cmd = self.command
-      if debug:
-        cmd = '#!/usr/bin/env bash\n' + '\n'.join(['echo "{}: {}"'.format(n, params[n]) for n in params])
-        print(cmd)
-      return self.parsl_cmd(cmd, params)
+      cmd = Template(self.command).safe_substitute(params)
+      cmd_script = os.path.expanduser("~/timeCmdScript_{}_{}.sh".format(self.paropt_config['name'], int(time.time())))
+      with open(cmd_script, "w") as f:
+        f.write(cmd)
+      return self.parsl_cmd(cmd_script)
 
     # run initial random points
     init_params = [self.optimizer.suggest(self.utility) for i in range(self.init_points)]

@@ -30,7 +30,7 @@ class ParslOptimizer:
       verbose=2,
       random_state=1,
     )
-    self.utility = UtilityFunction(kind="ucb", kappa=kappa)
+    self.utility = UtilityFunction(kind="ucb", kappa=kappa, xi=0.0)
     self.logger = JSONLogger(path="./bayes_logs_{}_{}.json".format(paropt_config['name'], int(time.time())))
     self.optimizer.subscribe(Events.OPTMIZATION_STEP, self.logger)
 

@@ -12,4 +12,4 @@ module load anaconda/3
 source activate parsl_py36
 
 echo "Starting ${name} optimization at $(date)"
-python ${HOME}/testParsl/nscc/runApp/runOptimizer ${paropt_config_path}
+python ${HOME}/testParsl/nscc/runApp/runOptimizer.py ${paropt_config_path}

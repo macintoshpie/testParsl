@@ -21,6 +21,6 @@ submitScriptPath = 'submit_{}_{}.sh'.format(paropt_config['name'], int(time.time
 with open(submitScriptPath, 'w') as f:
   f.write(submitScript)
 
-proc = subprocess.Popen(['bash', submitScriptPath], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+proc = subprocess.Popen(['qsub', submitScriptPath], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 outs, errs = proc.communicate()
 print(outs, errs)

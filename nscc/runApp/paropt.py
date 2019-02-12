@@ -11,6 +11,7 @@ from bayes_opt import BayesianOptimization
 from bayes_opt import UtilityFunction
 from bayes_opt.observer import JSONLogger
 from bayes_opt.event import Events
+from bayes_opt.util import load_logs
 
 class ParslOptimizer:
   def __init__(self, parsl_config, parsl_cmd, paropt_config, kappa=2.5):
@@ -74,6 +75,7 @@ class ParslOptimizer:
       return self.parsl_cmd(cmd_script)
 
     # run initial random points
+    # do this before loading logs b/c otherwise they won't be random points
     init_params = [self.optimizer.suggest(self.utility) for i in range(self.init_points)]
     init_results = []
     for i in range(self.init_points):
@@ -84,6 +86,10 @@ class ParslOptimizer:
       init_results.append(res)
       self.validateResult(init_params[i], res)
       self.registerResult(init_params[i], res)
+    
+    # fit previous observations into model
+    if self.paropt_config.get('load_logs'):
+      load_logs(self.optimizer, logs=[self.paropt_config['load_logs']])
     
     # run remaining tests
     for i in range(self.n_iter):

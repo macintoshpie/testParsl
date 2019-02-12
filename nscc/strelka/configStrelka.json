@@ -5,7 +5,7 @@
     "nCPUs": [4, 24],
     "totalMem": [8, 98]
   },
-  "walltime": "25:00:00",
+  "walltime": "24:00:00",
   "init_points": 0,
   "n_iter": 5,
   "load_logs": "../strelka/bayes_logs_1549818579.json"

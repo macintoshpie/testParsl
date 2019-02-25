@@ -1,0 +1,11 @@
+{
+  "name": "gatk3",
+  "script_path": "../gatk3/runGATK3.sh",
+  "parameters": {
+    "nct": [8, 24],
+    "threadsGC": [8, 24]
+  },
+  "walltime": "24:00:00",
+  "init_points": 2,
+  "n_iter": 3
+}

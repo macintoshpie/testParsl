@@ -3,7 +3,7 @@ from parsl.launchers import SimpleLauncher
 from parsl.providers import TorqueProvider
 
 from parsl.config import Config
-from parsl.executors import HighThroughputExecutor
+from parsl.executors import HighThroughputExecutor, ThreadPoolExecutor
 from parsl.addresses import address_by_interface
 
 
@@ -11,9 +11,18 @@ initCmd = """module load anaconda/3
 source activate parsl_py36
 """
 
-def getParslConfig(paropt_config):
+def getParslConfig(paropt_config, local):
   """config for runnnig on NSCC's Aspire"""
-
+  if local:
+    return Config(
+        executors=[
+          ThreadPoolExecutor(
+            max_threads=8,
+            label='local_threads'
+          )
+        ]
+      )
+  
   return Config(
     executors=[
       HighThroughputExecutor(

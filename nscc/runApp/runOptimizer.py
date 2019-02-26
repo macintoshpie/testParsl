@@ -46,17 +46,8 @@ for p, rng in paropt_config['parameters'].items():
 
 print("Final paropt config: {}".format(paropt_config))
 
-# po = ParslOptimizer(
-#   getParslConfig(paropt_config),
-#   timeCmd,
-#   command=script,
-#   command_params=paropt_config['parameters'],
-#   init_points=paropt_config['init_points'],
-#   n_iter=paropt_config['n_iter']
-# )
-
 po = ParslOptimizer(
-  getParslConfig(paropt_config),
+  getParslConfig(paropt_config, False),
   timeCmd,
   paropt_config=paropt_config
 )

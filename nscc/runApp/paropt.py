@@ -1,6 +1,8 @@
 import os
 import time
 from string import Template
+import numpy as np
+import itertools
 
 import parsl
 from parsl.executors.threads import ThreadPoolExecutor
@@ -22,18 +24,42 @@ class ParslOptimizer:
     with open(os.path.dirname(os.path.abspath(__file__))+"/"+paropt_config['script_path'], 'r') as f:
       self.command = f.read()
     self.command_params = paropt_config['parameters']
+    self.my_logs = "./my_logs_{}_{}.json".format(paropt_config['name'], int(time.time()))
+    # create log header
+    # FIXME: assuming order when logging, need to investigate...
+    with open(self.my_logs, "a") as myfile:
+      myfile.write(",".join(list(self.command_params.keys()) + ["negDays"])+"\n")
 
-    self.init_points = paropt_config['init_points']
-    self.n_iter = paropt_config['n_iter']
-    self.optimizer = BayesianOptimization(
-      f=None,
-      pbounds=self.command_params,
-      verbose=2,
-      random_state=1,
-    )
-    self.utility = UtilityFunction(kind="ucb", kappa=kappa, xi=0.0)
-    self.logger = JSONLogger(path="./bayes_logs_{}_{}.json".format(paropt_config['name'], int(time.time())))
-    self.optimizer.subscribe(Events.OPTMIZATION_STEP, self.logger)
+    # setup point selection model (grid search or bayesian optimization)
+    if paropt_config.get('grid_axis_points'):
+      # run grid search
+      # calculate sample indices for each param
+      if paropt_config['grid_axis_points'] < 2:
+        raise Exception("grid_axis_points must be >= 2")
+      param_ranges = []
+      for param, vals in self.command_params.items():
+        param_ranges.append(np.linspace(vals[0], vals[1], paropt_config['grid_axis_points']))
+      # get cartesian product of param configs
+      search_points = itertools.product(*param_ranges)
+      # convert sets into dictionaries -   param: value
+      # FIXME: I'm assuming it's going through dict keys in same order as above...
+      param_names = [name for name, _ in self.command_params.items()]
+      self.grid_search_points = []
+      for point in search_points:
+        self.grid_search_points.append(dict(zip(param_names, point)))
+      print("Finished Grid search: ", self.grid_search_points)
+    else:
+      self.init_points = paropt_config['init_points']
+      self.n_iter = paropt_config['n_iter']
+      self.optimizer = BayesianOptimization(
+        f=None,
+        pbounds=self.command_params,
+        verbose=2,
+        random_state=1,
+      )
+      self.utility = UtilityFunction(kind="ucb", kappa=kappa, xi=0.0)
+      self.logger = JSONLogger(path="./bayes_logs_{}_{}.json".format(paropt_config['name'], int(time.time())))
+      self.optimizer.subscribe(Events.OPTMIZATION_STEP, self.logger)
 
   
   def registerResult(self, params, res):
@@ -46,6 +72,10 @@ class ParslOptimizer:
   def validateResult(self, params, res):
     if res[0] != 0:
       raise Exception("NON_ZERO_EXIT:\n  PARAMS: {}\n  OUT: {}".format(params, res[1]))
+  
+  def logResult(self, params, res):
+    with open(self.my_logs, "a") as mylog:
+      mylog.write(",".join(map(str, list(params.values())+[res[2]]))+"\n")
   
   def run(self, savePlots=False, debug=False):
     parsl.set_stream_logger()
@@ -74,6 +104,13 @@ class ParslOptimizer:
         f.write(cmd)
       return self.parsl_cmd(cmd_script)
 
+    if self.grid_search_points:
+      # run grid search
+      for point in self.grid_search_points:
+        res = prepareAndRun(point, debug).result()
+        self.validateResult(point, res)
+        self.logResult(point, res)
+      return
     # run initial random points
     # do this before loading logs b/c otherwise they won't be random points
     init_params = [self.optimizer.suggest(self.utility) for i in range(self.init_points)]

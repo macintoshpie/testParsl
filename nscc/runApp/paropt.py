@@ -24,7 +24,7 @@ class ParslOptimizer:
     with open(os.path.dirname(os.path.abspath(__file__))+"/"+paropt_config['script_path'], 'r') as f:
       self.command = f.read()
     self.command_params = paropt_config['parameters']
-    self.my_logs = "./my_logs_{}_{}.json".format(paropt_config['name'], int(time.time()))
+    self.my_logs = "./my_logs_{}_{}.csv".format(paropt_config['name'], int(time.time()))
     # create log header
     # FIXME: assuming order when logging, need to investigate...
     with open(self.my_logs, "a") as myfile:

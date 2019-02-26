@@ -1,6 +1,6 @@
 {
   "name": "platypusGrid",
-  "script_path": "../platypus/runPlatypusDebug.sh",
+  "script_path": "../platypus/runPlatypus.sh",
   "parameters": {
     "nCPU": [4, 24],
     "bufferSize": [100000, 400000]

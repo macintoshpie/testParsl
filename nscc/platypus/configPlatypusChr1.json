@@ -1,0 +1,11 @@
+{
+  "name": "platypusChr1",
+  "script_path": "../platypus/runPlatypusChr1.sh",
+  "parameters": {
+    "nCPU": [4, 24],
+    "bufferSize": [100000, 400000]
+  },
+  "walltime": "10:00:00",
+  "init_points": 3,
+  "n_iter": 2
+}

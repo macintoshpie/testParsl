@@ -29,7 +29,8 @@ class ParslOptimizer:
     # FIXME: assuming order when logging, need to investigate...
     with open(self.my_logs, "a") as myfile:
       myfile.write(",".join(list(self.command_params.keys()) + ["negDays"])+"\n")
-
+    
+    self.grid_search_points = []
     # setup point selection model (grid search or bayesian optimization)
     if paropt_config.get('grid_axis_points'):
       # run grid search
@@ -44,7 +45,6 @@ class ParslOptimizer:
       # convert sets into dictionaries -   param: value
       # FIXME: I'm assuming it's going through dict keys in same order as above...
       param_names = [name for name, _ in self.command_params.items()]
-      self.grid_search_points = []
       for point in search_points:
         self.grid_search_points.append(dict(zip(param_names, point)))
       print("Finished Grid search: ", self.grid_search_points)

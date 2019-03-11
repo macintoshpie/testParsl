@@ -1,0 +1,10 @@
+{"target": -0.11898969744642575, "params": {"nCPUs": 11.174484103456628, "totalMem": 71.38855542290992}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.0, "delta": 0.0}}
+{"target": -0.2699817859271058, "params": {"nCPUs": 2.0025162459815875, "totalMem": 34.6052663916019}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.001809, "delta": 0.001809}}
+{"target": -0.27278709055097017, "params": {"nCPUs": 2.0, "totalMem": 96.0}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.002379, "delta": 0.00057}}
+{"target": -0.13843117032889968, "params": {"nCPUs": 24.0, "totalMem": 8.0}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.002925, "delta": 0.000546}}
+{"target": -0.09878389001720482, "params": {"nCPUs": 24.0, "totalMem": 98.0}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.003424, "delta": 0.000499}}
+{"target": -0.09668448339457865, "params": {"nCPUs": 24.0, "totalMem": 50.025243508996425}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.003974, "delta": 0.00055}}
+{"target": -0.09950392950464178, "params": {"nCPUs": 24.0, "totalMem": 76.25183153506275}, "datetime": {"datetime": "2019-02-22 01:41:57", "elapsed": 0.004542, "delta": 0.000568}}
+{"target": -0.09986809860501024, "params": {"nCPUs": 24.0, "totalMem": 28.250370897562803}, "datetime": {"datetime": "2019-02-22 04:07:08", "elapsed": 8711.475892, "delta": 8711.47135}}
+{"target": -0.09760984851530305, "params": {"nCPUs": 24.0, "totalMem": 63.215442345097784}, "datetime": {"datetime": "2019-02-22 06:27:47", "elapsed": 17150.611464, "delta": 8439.135572}}
+{"target": -0.09777458558755893, "params": {"nCPUs": 23.995556017385006, "totalMem": 89.8753087458412}, "datetime": {"datetime": "2019-02-22 08:48:39", "elapsed": 25602.650118, "delta": 8452.038654}}

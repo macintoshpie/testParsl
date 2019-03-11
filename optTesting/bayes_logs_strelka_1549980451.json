@@ -1,0 +1,5 @@
+{"target": -0.11898969744642575, "params": {"nCPUs": 11.174484103456628, "totalMem": 71.38855542290992}, "datetime": {"datetime": "2019-02-12 22:07:34", "elapsed": 0.0, "delta": 0.0}}
+{"target": -0.2699817859271058, "params": {"nCPUs": 2.0025162459815875, "totalMem": 34.6052663916019}, "datetime": {"datetime": "2019-02-12 22:07:34", "elapsed": 0.006208, "delta": 0.006208}}
+{"target": -0.27278709055097017, "params": {"nCPUs": 2.0, "totalMem": 96.0}, "datetime": {"datetime": "2019-02-12 22:07:34", "elapsed": 0.00693, "delta": 0.000722}}
+{"target": -0.13843117032889968, "params": {"nCPUs": 24.0, "totalMem": 8.0}, "datetime": {"datetime": "2019-02-12 22:07:34", "elapsed": 0.007518, "delta": 0.000588}}
+{"target": -0.09878389001720482, "params": {"nCPUs": 24.0, "totalMem": 98.0}, "datetime": {"datetime": "2019-02-13 01:00:56", "elapsed": 10401.653761, "delta": 10401.646243}}

@@ -102,3 +102,6 @@ The results (ie configuration values and resulting runtimes) should be stored in
 If you did a grid search, it should put the results in a file called `my_logs_toolname_1234321231.csv` (note that this file still gets created even if you're not running a grid search...).  
 You can also see the templated scripts it's running in the home directory, they should be named something like `timeCmd_toolname_1234321234.sh`.  
 Stderr and stdout of the head node are directed to files in the directories `~/errorfiles` and `~/outputfiles`.
+
+### Visualization
+Checkout the notebooks in the optTesting directory for visualization stuff.

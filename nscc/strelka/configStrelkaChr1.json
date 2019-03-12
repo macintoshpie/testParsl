@@ -1,0 +1,11 @@
+{
+  "name": "strelkaChr1",
+  "script_path": "../strelka/runStrelkaChr1.sh",
+  "parameters": {
+    "nCPUs": [4, 24],
+    "totalMem": [8, 98]
+  },
+  "walltime": "24:00:00",
+  "init_points": 3,
+  "n_iter": 2
+}
